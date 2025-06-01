@@ -3,8 +3,7 @@
 import argparse
 from auth import init_client
 import aws_scripts as aws_scripts
-from args import vpc_arguments, tag_vpc_arguments, igw_arguments, subnet_arguments
-
+from args import vpc_arguments, tag_vpc_arguments, igw_arguments, subnet_arguments, ec2_arguments
 
 parser = argparse.ArgumentParser(
     description="AWS CLI Tool",
@@ -29,6 +28,12 @@ igw_arguments(igw_parser)
 
 subnet_parser = subparsers.add_parser("subnet", help="Create subnet and route table")
 subnet_arguments(subnet_parser)
+
+ec2_parser = subparsers.add_parser(
+    "launch-ec2",
+    help="Create SG + KeyPair and launch an EC2 instance"
+)
+ec2_arguments(ec2_parser)
 
 
 def main():
@@ -61,6 +66,16 @@ def main():
                 args.vpc_id,
                 args.cidr,
                 is_public=args.public
+            )
+
+        case "launch-ec2":
+            aws_scripts.launch_ec2_workflow(
+                aws_client,
+                vpc_id=args.vpc_id,
+                subnet_id=args.subnet_id,
+                key_name=args.key_name,
+                sg_name=args.sg_name,
+                ami_id=args.ami_id,
             )
 
 

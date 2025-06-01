@@ -62,3 +62,31 @@ def subnet_arguments(parser):
     parser.add_argument("--vpc-id", required=True, help="VPC ID for the subnet")
     parser.add_argument("--cidr", required=True, help="CIDR block for the subnet")
     parser.add_argument("--public", action="store_true", help="Mark subnet as public")
+
+
+def ec2_arguments(parser):
+    parser.add_argument(
+        "--vpc-id",
+        required=True,
+        help="Existing VPC ID (e.g. vpc-0abc1234def56789)"
+    )
+    parser.add_argument(
+        "--subnet-id",
+        required=True,
+        help="Subnet to place the instance in"
+    )
+    parser.add_argument(
+        "--ami-id",
+        required=False,
+        help="Custom AMI ID (defaults to latest Amazon Linux 2)"
+    )
+    parser.add_argument(
+        "--key-name",
+        default="auto-keypair",
+        help="Key pair name (will be created if absent)"
+    )
+    parser.add_argument(
+        "--sg-name",
+        default="auto-sg",
+        help="Security-group name (will be created if absent)"
+    )
